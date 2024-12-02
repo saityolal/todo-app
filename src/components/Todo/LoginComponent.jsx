@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../security/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./security/AuthContext";
 
 function LoginComponent() {
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
 
-  
   const [showErrorMessage, setErrorMessage] = useState(false);
 
   const navigate = useNavigate();
 
-  const authContext = useAuth()
+  const authContext = useAuth();
 
   function handleUsernameChange(event) {
     // console.log(event.target.value);
@@ -26,7 +25,6 @@ function LoginComponent() {
   function handleSubmit() {
     if (authContext.login(username, password)) {
       navigate(`/welcome/${username}`);
-      
     } else {
       setErrorMessage(true);
     }
