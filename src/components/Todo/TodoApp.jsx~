@@ -1,0 +1,233 @@
+import { useState } from "react";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+  Link,
+} from "react-router-dom";
+
+import "./TodoApp.css";
+
+export default function TodoApp() {
+  return (
+    <div className="TodoApp">
+      <BrowserRouter>
+        <HeaderComponent />
+
+        <Routes>
+          <Route path="/" element={<LoginComponent />} />
+          <Route path="/login" element={<LoginComponent />} />
+          <Route path="/welcome/:username" element={<WelcomeComponent />} />
+          <Route path="*" element={<ErrorComponent />} />
+          <Route path="/todos" element={<ListTodosComponent />} />
+          <Route path="/logout" element={<LogoutComponent />} />
+        </Routes>
+        <FooterComponent />
+      </BrowserRouter>
+    </div>
+  );
+}
+
+function LoginComponent() {
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("");
+
+  const [showSuccessMessage, setSuccessMessage] = useState(false);
+  const [showErrorMessage, setErrorMessage] = useState(false);
+
+  const navigate = useNavigate();
+
+  function handleUsernameChange(event) {
+    // console.log(event.target.value);
+    setUsername(event.target.value);
+  }
+
+  function handlepasswordChange(event) {
+    // console.log(event.target.value);
+    setPassword(event.target.value);
+  }
+
+  function handleSubmit() {
+    if (username === "admin" && password === "admin") {
+      console.log("Login Success");
+      setSuccessMessage(true);
+      setErrorMessage(false);
+      navigate(`/welcome/${username}`);
+    } else {
+      console.log("Login Failed");
+      setSuccessMessage(false);
+      setErrorMessage(true);
+    }
+  }
+
+  return (
+    <div className="Login">
+      {showSuccessMessage && (
+        <div className="successMessage">Login Success</div>
+      )}
+      {showErrorMessage && <div className="errorMessage">Login Failed</div>}
+
+      <div className="LoginForm">
+        <div>
+          <label>User Name:</label>
+          <input
+            type="text"
+            name="username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={handlepasswordChange}
+          />
+        </div>
+        <div>
+          <button type="button" onClick={handleSubmit}>
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WelcomeComponent() {
+  const { username } = useParams();
+
+  return (
+    <div className="Welcome">
+      <h1>Welcome {username}</h1>
+      <div>
+        <Link to="/todos">View Todos</Link>
+      </div>
+    </div>
+  );
+}
+
+function ErrorComponent() {
+  return <div className="Error">Error 404.</div>;
+}
+
+function ListTodosComponent() {
+  const today = new Date();
+  const targetDate = new Date(
+    today.getFullYear() + 12,
+    today.getMonth(),
+    today.getDay()
+  );
+
+  const todos = [
+    {
+      id: 1,
+      description: "Learn React",
+      done: false,
+      targetDate: targetDate,
+    },
+    {
+      id: 2,
+      description: "Learn Angular",
+      done: false,
+      targetDate: targetDate,
+    },
+    {
+      id: 3,
+      description: "Learn Vue",
+      done: false,
+      targetDate: targetDate,
+    },
+  ];
+  return (
+    <div className="container">
+      <h1>
+        <i>List of things to do.</i>
+      </h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <td>ID</td>
+            <td>Descripcion</td>
+            <td>Is done?</td>
+            <td>Target Date</td>
+          </tr>
+        </thead>
+        <tbody>
+          {todos.map((todo) => (
+            <tr key={todo.id}>
+              <td>{todo.id}</td>
+              <td>{todo.description}</td>
+              <td>{todo.done.toString()}</td>
+              <td>{todo.targetDate.toDateString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function HeaderComponent() {
+  return (
+    <header className="border-bottom border-light border-5 mb-5 p-2">
+      <div className="container">
+        <div className="row">
+          <nav className="navbar navbar-expand-lg">
+            <a
+              className="navbar-brand ms-2 fs-2 fw-bold text-black"
+              href="https://github.com/saityolal"
+            >
+              Sait Yolal
+            </a>
+            <div className="collapse navbar-collapse">
+              <ul className="navbar-nav">
+                <li className="nav-item fs-5">
+                  <Link className="nav-link" to="/welcome">
+                    Home
+                  </Link>
+                </li>
+                <li className="nav-item fs-5">
+                  <Link className="nav-link" to="/todos">
+                    Todos
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <ul className="navbar-nav">
+              <li className="nav-item fs-5">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item fs-5">
+                <Link className="nav-link" to="/logout">
+                  Logout
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function FooterComponent() {
+  return (
+    <footer className="footer">
+      <div className="container">Footer</div>
+    </footer>
+  );
+}
+
+function LogoutComponent() {
+  return (
+    <div className="Logout">
+      <h1>Logged out successfully</h1>
+    </div>
+  );
+}
