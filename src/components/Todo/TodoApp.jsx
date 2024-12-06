@@ -9,6 +9,7 @@ import LoginComponent from "./LoginComponent";
 import ListTodosComponent from "./ListTodosComponent";
 import ErrorComponent from "./ErrorComponent";
 import AuthProvider, { useAuth } from "./security/AuthContext";
+import TodoComponent from "./TodoComponent";
 export default function TodoApp() {
   function AuthenticatedRoute({ children }) {
     const authContext = useAuth();
@@ -34,14 +35,29 @@ export default function TodoApp() {
                   <WelcomeComponent />
                 </AuthenticatedRoute>
               }
+            /><Route
+              path="/welcome"
+              element={
+                <AuthenticatedRoute>
+                  <WelcomeComponent />
+                </AuthenticatedRoute>
+              }
             />
             {/* <Route path="/welcome" element={<WelcomeComponent />} /> */}
-            <Route path="*" element={<ErrorComponent />} />
+            
             <Route
               path="/todos"
               element={
                 <AuthenticatedRoute>
                   <ListTodosComponent />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/todos/:id"
+              element={
+                <AuthenticatedRoute>
+                  <TodoComponent />
                 </AuthenticatedRoute>
               }
             />
@@ -53,6 +69,7 @@ export default function TodoApp() {
                 </AuthenticatedRoute>
               }
             />
+            <Route path="*" element={<ErrorComponent />} />
           </Routes>
           <FooterComponent />
         </BrowserRouter>

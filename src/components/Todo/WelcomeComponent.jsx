@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
-import { retrieveHelloWorldBean, retrieveHelloWorldBeanWithPathVariable } from "./api/HelloWorldApiService";
-import { retrieveTodosWithUsers, retrieveUsers } from "./api/TodoApiService";
+import { retrieveAllTodosWithUserNameApi } from "./api/TodoApiService";
 function WelcomeComponent() {
   const { username } = useParams();
 
@@ -25,7 +24,7 @@ function WelcomeComponent() {
       // .catch((error) => errorResponse(error))
       // .finally(() => console.log("cleanup"));
 
-      retrieveTodosWithUsers("john")
+      retrieveAllTodosWithUserNameApi("john")
       .then((response) => successfulResponse(response))
       .catch((error) => errorResponse(error))
       .finally(() => console.log("cleanup"));

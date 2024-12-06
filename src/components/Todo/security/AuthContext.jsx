@@ -9,12 +9,15 @@ function AuthProvider({ children }) {
   //setInterval(() =>setNumber(number+1), 1000);
   //const valueToBeShared = { number, isAuthenticated, setAuthenticated };
 
+  const [username, setUsername] = useState(null);
   function login(username, password) {
     if (username === "admin" && password === "admin") {
       setAuthenticated(true);
+      setUsername(username);
       return true;
     } else {
       setAuthenticated(false);
+      setUsername(null);
       return false;
     }
   }
@@ -23,7 +26,7 @@ function AuthProvider({ children }) {
     setAuthenticated(false);
   }
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, username }}>
       {children}
     </AuthContext.Provider>
   );
