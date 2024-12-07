@@ -43,7 +43,11 @@ function ListTodosComponent() {
   }
   function updateTodo(id) {
     console.log("UpdateTodo is called " + id);
-    navigate(`/todos/${id}`);
+    navigate(`/todos/${id}`);  // Pass the id to another component
+  }
+
+  function addNewTodo(){
+    navigate(`/todos/-1`);  // Navigate to a new component to create a new todo
   }
   // const todos = [
   //   {
@@ -106,6 +110,7 @@ function ListTodosComponent() {
           ))}
         </tbody>
       </table>
+      <div><button className="btn btn-info m-5" onClick={addNewTodo}>Add New Todo</button></div>
     </div>
   );
 }
