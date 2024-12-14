@@ -1,8 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { retrieveAllTodosWithUserNameApi } from "./api/TodoApiService";
+import { useAuth } from "./security/AuthContext";
+import { retrieveHelloWorldPathVariable } from "./api/HelloWorldApiService";
 function WelcomeComponent() {
   const { username } = useParams();
+
+  const authContext = useAuth();
 
   const [message, setMessage] = useState(null);
 
@@ -19,15 +23,15 @@ function WelcomeComponent() {
     //   .catch((error) => errorResponse(error))
     //   .finally(() => console.log("cleanup"));
 
-      // retrieveHelloWorldBeanWithPathVariable(username)
-      // .then((response) => successfulResponse(response))
-      // .catch((error) => errorResponse(error))
-      // .finally(() => console.log("cleanup"));
-
-      retrieveAllTodosWithUserNameApi("john")
+      retrieveHelloWorldPathVariable(username, authContext.token)
       .then((response) => successfulResponse(response))
       .catch((error) => errorResponse(error))
       .finally(() => console.log("cleanup"));
+
+      // retrieveAllTodosWithUserNameApi("admin")
+      // .then((response) => successfulResponse(response))
+      // .catch((error) => errorResponse(error))
+      // .finally(() => console.log("cleanup"));
   }
 
   function successfulResponse(response) {
