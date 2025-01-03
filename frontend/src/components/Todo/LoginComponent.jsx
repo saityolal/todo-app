@@ -23,6 +23,8 @@ function LoginComponent() {
   }
 
   async function handleSubmit() {
+    console.log("Username:", username);
+    console.log("Password:", password);
     if (await authContext.login(username, password)) {
       navigate(`/welcome/${username}`);
     } else {
